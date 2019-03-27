@@ -15,9 +15,7 @@ export default class StatusBar extends Component {
                     <section className = {Styles.statusBar}>
                         <button>
                             <img src = {context.avatar}/>
-                            <span>{context.currentUserFirstName}</span>
-                            &nbsp;
-                            <span>{context.currentUserLastName}</span>
+                            <span>{context.currentUserFirstName} {context.currentUserLastName}</span>
                         </button>
                     </section>
                 )}
