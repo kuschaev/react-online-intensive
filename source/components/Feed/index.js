@@ -15,6 +15,7 @@ export default class Feed extends Component {
         super();
         const now = Date.now();
         this.state = {
+            fetchingPosts: true,
             posts: [
                 {id: '123', comment: 'Hello!', created: now},
                 {id: '456', comment: 'Hi!', created: now - 100},
@@ -24,14 +25,19 @@ export default class Feed extends Component {
     }
 
     render() {
-        const {posts} = this.state;
+        let {posts, fetchingPosts} = this.state;
+
         const postsJSX = posts.map(post => {
             return <Post key = {post.id} {...post}/>;
         });
-        
+
+        setTimeout(() => this.setState({
+            fetchingPosts: false
+        }), 1500);
+
         return (
             <section className = {Styles.feed}>
-                <Spinner isSpinning />
+                <Spinner isSpinning = {fetchingPosts} />
                 <StatusBar />
                 <Composer />
                 {postsJSX}
