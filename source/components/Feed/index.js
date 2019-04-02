@@ -23,7 +23,7 @@ export default class Feed extends Component {
             ]
         };
 
-        setTimeout(() => this.setState(oldState => {
+        setInterval(() => this.setState(oldState => {
             // console.log(oldState);
             return {
                 fetchingPosts: !oldState.fetchingPosts
@@ -32,7 +32,6 @@ export default class Feed extends Component {
     }
 
     render() {
-        console.log('render called');
         const {posts, fetchingPosts} = this.state;
 
         const postsJSX = posts.map(post => {
