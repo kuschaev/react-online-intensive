@@ -22,18 +22,22 @@ export default class Feed extends Component {
                 {id: '789', comment: 'Howdy! 👋', created: now - 300}
             ]
         };
+
+        setTimeout(() => this.setState(oldState => {
+            // console.log(oldState);
+            return {
+                fetchingPosts: !oldState.fetchingPosts
+            };
+        }), 1500);
     }
 
     render() {
-        let {posts, fetchingPosts} = this.state;
+        console.log('render called');
+        const {posts, fetchingPosts} = this.state;
 
         const postsJSX = posts.map(post => {
             return <Post key = {post.id} {...post}/>;
         });
-
-        setTimeout(() => this.setState({
-            fetchingPosts: false
-        }), 1500);
 
         return (
             <section className = {Styles.feed}>
