@@ -27,12 +27,12 @@ export default class Feed extends Component {
                 }, {
                     id: getUniqueID(),
                     comment: 'Hi!',
-                    created: now - 100,
+                    created: now - 90000,
                     likes: []
                 }, {
                     id: getUniqueID(),
                     comment: 'Howdy! 👋',
-                    created: now - 300,
+                    created: now - 126000,
                     likes: []
                 }
             ]

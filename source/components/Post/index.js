@@ -40,7 +40,7 @@ export default class Post extends Component {
                         <span className = {Styles.cross} onClick = {this._removePost}/>
                         <img src = {context.avatar} />
                         <a>{context.currentUserFirstName} {context.currentUserLastName}</a>
-                        <time>{moment.unix(created).format('MMMM D h:mm:ss a')}</time>
+                        <time>{moment(created).format('MMMM D h:mm:ss a')}</time>
                         <p>{comment}</p>
                         <Like
                             _likePost = {_likePost}
