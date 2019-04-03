@@ -31,18 +31,34 @@
 
     & a {
         top: 15px;
-        color: var(--palletteColor7);
+        color: var(--paletteColor7);
         font-weight: 700;
     }
 
     & time {
         top: 35px;
-        color: var(-paletteColor5);
+        color: var(--paletteColor5);
         font-size: 12px;
     }
 
     & p {
         margin-top: 16px;
         font-size: 14px;
+    }
+
+    & .cross {
+        content: '';
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 10px;
+        height: 10px;
+        background-image: url('../../theme/assets/cross.png');
+        background-repeat: no-repeat;
+        cursor: pointer;
+
+        &:hover {
+            background-position: -13px 0;
+        }
     }
 }
