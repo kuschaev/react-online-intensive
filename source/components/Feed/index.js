@@ -1,5 +1,6 @@
 // Core
 import React, { Component } from 'react';
+import moment from 'moment';
 
 // Components
 import Spinner from 'components/Spinner';
@@ -9,26 +10,32 @@ import Post from 'components/Post';
 
 // Instruments
 import Styles from './styles.m.css';
+import {getUniqueID} from 'instruments';
 
 export default class Feed extends Component {
     constructor() {
         super();
         const now = Date.now();
         this.state = {
-            fetchingPosts: true,
+            fetchingPosts: false,
             posts: [
-                {id: '123', comment: 'Hello!', created: now},
-                {id: '456', comment: 'Hi!', created: now - 100},
-                {id: '789', comment: 'Howdy! 👋', created: now - 300}
+                {id: getUniqueID(), comment: 'Hello!', created: now},
+                {id: getUniqueID(), comment: 'Hi!', created: now - 100},
+                {id: getUniqueID(), comment: 'Howdy! 👋', created: now - 300}
             ]
         };
+        this._createPost = this._createPost.bind(this);
+    }
 
-        setInterval(() => this.setState(oldState => {
-            // console.log(oldState);
-            return {
-                fetchingPosts: !oldState.fetchingPosts
-            };
-        }), 1500);
+    _createPost(comment) {
+        const post = {
+            id: getUniqueID(),
+            created: moment().utc(),
+            comment
+        };
+        this.setState(({posts}) => ({
+            posts: [post, ...posts]
+        }));
     }
 
     render() {
@@ -42,7 +49,7 @@ export default class Feed extends Component {
             <section className = {Styles.feed}>
                 <Spinner isSpinning = {fetchingPosts} />
                 <StatusBar />
-                <Composer />
+                <Composer _createPost = {this._createPost} />
                 {postsJSX}
             </section>
         );
