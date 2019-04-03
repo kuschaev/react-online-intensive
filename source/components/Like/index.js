@@ -21,14 +21,60 @@ export default class Like extends Component {
 
     constructor() {
         super();
+
+        this.state = {
+            showLikers: false
+        }
         this._getLikeStyles = this._getLikeStyles.bind(this);
         this._getLikedByMe = this._getLikedByMe.bind(this);
         this._likePost = this._likePost.bind(this);
+        this._showLikers = this._showLikers.bind(this);
+        this._hideLikers = this._hideLikers .bind(this);
+        this._getLikersList = this._getLikersList .bind(this);
+        this._getLikesDescription = this._getLikesDescription.bind(this);
     }
 
     _likePost() {
         const {_likePost, id} = this.props;
         _likePost(id);
+    }
+
+    _showLikers() {
+        this.setState({
+            showLikers: true
+        });
+    }
+
+    _hideLikers() {
+        this.setState({
+            showLikers: false
+        });
+    }
+
+    _getLikersList() {
+        const
+            {showLikers} = this.state,
+            {likes} = this.props,
+            likesJSX = likes.map(({id, firstName, lastName}) => (
+                <li key = {id}>{`${firstName} ${lastName}`}</li>
+            ));
+        return likes.length && showLikers ?
+            <ul>{likesJSX}</ul> :
+            null;
+    }
+
+    _getLikesDescription() {
+        const
+            {currentUserFirstName, currentUserLastName, likes} = this.props,
+            likedByMe = this._getLikedByMe();
+        if (likes.length === 1 && likedByMe) {
+            return `${currentUserFirstName} ${currentUserLastName}`;
+        } else if (likes.length === 2 && likedByMe) {
+            return `You and ${likes.length - 1} other`;
+        } else if (likedByMe) {
+            return `You and ${likes.length - 1} others`;
+        }
+        return likes.length;
     }
 
     _getLikeStyles() {
@@ -51,9 +97,21 @@ export default class Like extends Component {
 
     render() {
         const likeStyles = this._getLikeStyles();
+        const likersList = this._getLikersList();
+        const likesDescription = this._getLikesDescription();
         return (
             <section className = {Styles.like} >
-                <span className = {likeStyles} onClick = {this._likePost}>Like</span>
+                <span className = {likeStyles} onClick = {this._likePost}>
+                    Like
+                </span>
+                <div>
+                    {likersList}
+                    <span
+                        onMouseEnter = {this._showLikers}
+                        onMouseLeave = {this._hideLikers}>
+                        {likesDescription}
+                    </span>
+                </div>
             </section>
         );
     }
