@@ -38,6 +38,7 @@ export default class Feed extends Component {
             ]
         };
         this._createPost = this._createPost.bind(this);
+        this._removePost = this._removePost.bind(this);
         this._likePost = this._likePost.bind(this);
         this._setPostsFetchingState = this._setPostsFetchingState.bind(this);
     }
@@ -62,6 +63,20 @@ export default class Feed extends Component {
         this.setState(({posts}) => ({
             posts: [post, ...posts]
         }));
+        this._setPostsFetchingState(false);
+    }
+
+    async _removePost(id) {
+        this._setPostsFetchingState(true);
+
+        await delay(900);
+
+        this.setState(oldState => {
+            return {
+                posts: oldState.posts.filter(post => post.id !== id)
+            };
+        });
+
         this._setPostsFetchingState(false);
     }
 
@@ -98,6 +113,7 @@ export default class Feed extends Component {
             return <Post
                         key = {post.id}
                         {...post}
+                        _removePost = {this._removePost}
                         _likePost = {this._likePost}
                     />;
         });
