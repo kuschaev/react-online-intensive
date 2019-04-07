@@ -6,7 +6,10 @@ import cx from 'classnames';
 // Instruments
 import Styles from './styles.m.css';
 
-export default class Like extends Component {
+// Components
+import {withProfile} from 'components/HOC/withProfile';
+
+class Like extends Component {
     static propTypes = {
         _likePost: func.isRequired,
         id: string.isRequired,
@@ -19,39 +22,28 @@ export default class Like extends Component {
         ).isRequired
     }
 
-    constructor() {
-        super();
-
-        this.state = {
-            showLikers: false
-        }
-        this._getLikeStyles = this._getLikeStyles.bind(this);
-        this._getLikedByMe = this._getLikedByMe.bind(this);
-        this._likePost = this._likePost.bind(this);
-        this._showLikers = this._showLikers.bind(this);
-        this._hideLikers = this._hideLikers .bind(this);
-        this._getLikersList = this._getLikersList .bind(this);
-        this._getLikesDescription = this._getLikesDescription.bind(this);
+    state = {
+        showLikers: false
     }
 
-    _likePost() {
+    _likePost = () => {
         const {_likePost, id} = this.props;
         _likePost(id);
     }
 
-    _showLikers() {
+    _showLikers = () => {
         this.setState({
             showLikers: true
         });
     }
 
-    _hideLikers() {
+    _hideLikers = () => {
         this.setState({
             showLikers: false
         });
     }
 
-    _getLikersList() {
+    _getLikersList = () => {
         const
             {showLikers} = this.state,
             {likes} = this.props,
@@ -63,7 +55,7 @@ export default class Like extends Component {
             null;
     }
 
-    _getLikesDescription() {
+    _getLikesDescription = () => {
         const
             {currentUserFirstName, currentUserLastName, likes} = this.props,
             likedByMe = this._getLikedByMe();
@@ -77,7 +69,7 @@ export default class Like extends Component {
         return likes.length;
     }
 
-    _getLikeStyles() {
+    _getLikeStyles = () => {
         const likedByMe = this._getLikedByMe();
 
         return cx(Styles.icon, {
@@ -85,7 +77,7 @@ export default class Like extends Component {
         });
     }
 
-    _getLikedByMe() {
+    _getLikedByMe = () => {
         const {currentUserFirstName, currentUserLastName, likes} = this.props;
         return likes.some(({firstName, lastName}) => {
             return (
@@ -116,3 +108,5 @@ export default class Like extends Component {
         );
     }
 }
+
+export default withProfile(Like);
