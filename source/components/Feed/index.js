@@ -4,6 +4,7 @@ import moment from 'moment';
 
 // Components
 import {withProfile} from 'components/HOC/withProfile'
+import Catcher from 'components/Catcher';
 import Spinner from 'components/Spinner';
 import StatusBar from 'components/StatusBar';
 import Composer from 'components/Composer';
@@ -12,6 +13,7 @@ import Post from 'components/Post';
 // Instruments
 import Styles from './styles.m.css';
 import {getUniqueID, delay} from 'instruments';
+import {api} from 'config/api';
 
 class Feed extends Component {
     static now = Date.now();
@@ -37,9 +39,27 @@ class Feed extends Component {
         ]
     }
 
+    componentDidMount() {
+        this._fetchPosts();
+    }
+
     _setPostsFetchingState = (state) => {
         this.setState({
             fetchingPosts: state
+        });
+    }
+
+    _fetchPosts = async () => {
+        this._setPostsFetchingState(true);
+
+        const response = await fetch(api, {
+            method: 'GET'
+        });
+        const {data: posts} = await response.json();
+
+        this.setState({
+            posts,
+            fetchingPosts: false
         });
     }
 
@@ -102,12 +122,15 @@ class Feed extends Component {
         const {posts, fetchingPosts} = this.state;
 
         const postsJSX = posts.map(post => {
-            return <Post
-                        key = {post.id}
+            return (
+                <Catcher key = {post.id} >
+                    <Post
                         {...post}
                         _removePost = {this._removePost}
                         _likePost = {this._likePost}
                     />;
+                </Catcher>
+            );
         });
 
         return (
