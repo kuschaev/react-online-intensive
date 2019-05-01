@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import cx from 'classnames';
 import {Transition} from 'react-transition-group';
 import {fromTo} from 'gsap';
+import {Link} from 'react-router-dom';
 
 // Components
 import {withProfile} from 'components/HOC/withProfile';
@@ -58,10 +59,11 @@ class StatusBar extends Component {
                         <div>{statusMessage}</div>
                         <span />
                     </div>
-                    <button>
+                    <Link to = '/profile'>
                         <img src = {avatar}/>
-                        <span>{currentUserFirstName} {currentUserLastName}</span>
-                    </button>
+                        <span>{currentUserFirstName}</span>
+                    </Link>
+                    <Link to = '/feed'>Feed</Link>
                 </section>
             </Transition>
 
