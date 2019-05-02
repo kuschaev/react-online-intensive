@@ -64,6 +64,7 @@ class StatusBar extends Component {
                         <span>{currentUserFirstName}</span>
                     </Link>
                     <Link to = '/feed'>Feed</Link>
+                    <Link to = '/login'>Logout</Link>
                 </section>
             </Transition>
 
