@@ -17,27 +17,44 @@ import avatar from 'theme/assets/lisa'
 const options = {
     avatar,
     currentUserFirstName: 'Николай',
-    currentUserLastName: 'Кушаев',
+    currentUserLastName: 'Кущаев',
     isLoggedIn: false
 };
 
 @hot(module)
 export default class App extends Component {
     state = {
-        isLoggedIn: options.isLoggedIn
+        ...options,
+        _logout: this._logout
+    }
+
+    _login = () => {
+        this.setState({
+            isLoggedIn: true
+        });
+    }
+
+    _logout = () => {
+        this.setState({
+            isLoggedIn: false
+        });
     }
 
     render() {
-        const isLoggedIn = this.state.isLoggedIn;
+        const {isLoggedIn} = this.state;
         return (
             <Catcher>
-                <Provider value = {options}>
-                    {/*{isLoggedIn ? () : ()}*/}
+                <Provider value = {this.state}>
                     <StatusBar />
                     <Switch>
+                        <Route
+                            path = '/login'
+                            render = {(props) => (
+                                <Login _login = {this._login} {...props} />
+                            )}/>
+                        {!isLoggedIn && <Redirect to = '/login' />}
                         <Route component = {Feed} path = '/feed' />
                         <Route component = {Profile} path = '/profile' />
-                        <Route component = {Login} path = '/login' />
                         <Redirect to = '/feed' />
                     </Switch>
                 </Provider>

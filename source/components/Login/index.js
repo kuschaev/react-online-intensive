@@ -11,12 +11,10 @@ import Styles from './styles.m.css';
 class Login extends Component {
 
     _handleLoginClick = () => {
-        console.log(this.props.isLoggedIn);
+        this.props._login();
     }
 
     render() {
-        const {isLoggedIn} = this.props;
-
         return (
             <section className = {Styles.login}>
                 <Link to = '/feed' onClick = {this._handleLoginClick}>

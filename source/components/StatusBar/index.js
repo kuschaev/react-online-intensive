@@ -40,8 +40,12 @@ class StatusBar extends Component {
         fromTo(statusBar, 1, {opacity: 0}, {opacity: 1});
     }
 
+    _handleLogoutClick = () => {
+        this.props._logout();
+    }
+
     render() {
-        const {avatar, currentUserFirstName, currentUserLastName} = this.props;
+        const {avatar, currentUserFirstName, currentUserLastName, isLoggedIn} = this.props;
         const {online} = this.state;
         const statusStyle = cx(Styles.status, {
             [Styles.online]: online,
@@ -64,7 +68,9 @@ class StatusBar extends Component {
                         <span>{currentUserFirstName}</span>
                     </Link>
                     <Link to = '/feed'>Feed</Link>
-                    <Link to = '/login'>Logout</Link>
+                    {isLoggedIn && <Link to = '/login'
+                        onClick = {this._handleLogoutClick}>
+                        Logout</Link>}
                 </section>
             </Transition>
 
