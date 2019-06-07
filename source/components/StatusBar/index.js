@@ -52,6 +52,20 @@ class StatusBar extends Component {
             [Styles.offline]: !online
         });
         const statusMessage = online? 'Online' : 'Offline';
+        const links = isLoggedIn ?
+            <>
+                <Link to = '/profile'>
+                    <img src = {avatar}/>
+                    <span>{currentUserFirstName}</span>
+                </Link>
+                <Link to = '/feed'>
+                    Feed
+                </Link>
+                <Link to = '/login' onClick = {this._handleLogoutClick}>
+                    Logout
+                </Link>
+            </> : null;
+
         return (
             <Transition
                 in
@@ -63,17 +77,9 @@ class StatusBar extends Component {
                         <div>{statusMessage}</div>
                         <span />
                     </div>
-                    <Link to = '/profile'>
-                        <img src = {avatar}/>
-                        <span>{currentUserFirstName}</span>
-                    </Link>
-                    <Link to = '/feed'>Feed</Link>
-                    {isLoggedIn && <Link to = '/login'
-                        onClick = {this._handleLogoutClick}>
-                        Logout</Link>}
+                    {links}
                 </section>
             </Transition>
-
         )
     }
 }
