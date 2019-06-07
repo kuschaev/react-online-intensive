@@ -1,28 +1,73 @@
 // Core
 import React, { Component } from 'react';
+import {func, string} from 'prop-types';
 
 // Components
-import {Consumer} from 'components/HOC/withProfile';
+import {withProfile} from 'components/HOC/withProfile';
 
 // Instruments
 import Styles from './styles.m.css';
 
-export default class Composer extends Component {
+export class Composer extends Component {
+    static propTypes = {
+        _createPost: func.isRequired,
+        avatar: string.isRequired,
+        currentUserFirstName: string.isRequired,
+        currentUserLastName: string.isRequired,
+
+    }
+
+    state = {
+        comment: ''
+    }
+
+    _updateComment = (event) => {
+        this.setState({
+            comment: event.target.value
+        });
+    }
+
+    _submitComment = () => {
+        const {comment} = this.state;
+        if (!comment) {
+            return null;
+        }
+        this.props._createPost(comment);
+        this.setState({
+            comment: ''
+        });
+    }
+
+    _submitOnEnter = (event) => {
+        const enterKey = event.key === 'Enter';
+        if (enterKey) {
+            this._handleFormSubmit(event);
+        }
+    }
+
+    _handleFormSubmit = (event) => {
+        event.preventDefault();
+        this._submitComment();
+    }
+
     render() {
+        const {comment} = this.state;
+        const {avatar, currentUserFirstName} = this.props;
         return (
-            <Consumer>
-                {context => (
-                    <section className = {Styles.composer}>
-                        <img src = {context.avatar} />
-                        <form>
-                            <textarea
-                                placeholder = {`What's up, ${context.currentUserFirstName}?`}
-                            />
-                            <input type = 'submit' value = 'Post' />
-                        </form>
-                    </section>
-                )}
-            </Consumer>
+            <section className = {Styles.composer}>
+                <img src = {avatar} />
+                <form onSubmit = {this._handleFormSubmit}>
+                    <textarea
+                        placeholder = {`What's up, ${currentUserFirstName}?`}
+                        value = {comment}
+                        onChange = {this._updateComment}
+                        onKeyPress = {this._submitOnEnter}
+                    />
+                    <input type = 'submit' value = 'Post' />
+                </form>
+            </section>
         );
     }
 }
+
+export default withProfile(Composer);
